@@ -3,75 +3,84 @@ var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  // ask the user for their options
+  var userResponse = getCondition();
+
+  var password = generatePassword(userResponse);
   var passwordText = document.querySelector("#password");
 
-  // passwordText.value = password; (can I change as below?)
   passwordText.textContent = password;
 }
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
-function generatePassword(condition) {
-  if (condition) {
-    const length = condition.length;
-    const lowercase = condition.lowercase;
-    const uppercase = condition.uppercase;
-    const numeric = condition.numeric;
-    const special = condition.special;
+function generatePassword(userPicks) {
+  if (userPicks) {
+    // extract the users choices from the userPicks variable
+    const length = userPicks.length;
+    const lowercase = userPicks.lowercase;
+    const uppercase = userPicks.uppercase;
+    const numeric = userPicks.numeric;
+    const special = userPicks.special;
+
+    // define what all the char should be
     let lowercaseTemplate = "abcdefghijklmnopqrstuvwxyz";
     let uppercaseTemplate = lowercaseTemplate.toUpperCase();
     let numericTemplate = "123456789";
     let specialTemplate = "@#$%^&*()_";
-    let lowercaseString = "", uppercase = "", numericString = "", specialString = "";
+    let userTemplate = "";
 
-    for (var i=0; i < length; i++) {
-      lowercaseString += lowercaseTemplate[getRandomString(lowercaseTemplate.length-1)];
-      uppercaseString += uppercaseTemplate[getRandomString(uppercaseTemplate.length-1)];
-      numericString += numericTemplate[getRandomString(numericTemplate.length-1)];
-      specialString += specialTemplate[getRandomString(specialTemplate.length-1)];
+    // created place holder for the password that will be built
+    let password = "";
+
+    // if the user chose lc
+    // -- dump lowercase int usertempate
+    if (lowercase) {
+      userTemplate += lowercaseTemplate;
+    }
+    // if the user chose uc
+    // -- dump uppercase int usertempate
+    if (uppercase) {
+      userTemplate += uppercaseTemplate;
+    }
+    // if the user chose sc
+    // -- dump spec int usertempate
+    if (special) {
+      userTemplate += specialTemplate;
+    }
+    // if the user chose nums
+    // -- dump number int usertempate
+    if (numeric) {
+      userTemplate += numericTemplate;
+    }
     
-      if(!lowercase) {
-        lowercaseString = "";
-
-      }
-
-      if(!lowercase) {
-        uppercaseString = "";
-      }
-
-      if(!numeric) {
-        numericString = "";
-
-      }
-      
-      if(!special) {
-        specialString = "";
-      }
-    
-    
+    // for each char slot
+    for (var i = 0; i < length; i++) {
+      password += userTemplate[getRandomNumber(userTemplate.length-1)];
     }
 
-      let mixString = lowercaseString + uppercaseString + numericString + specialString;
-      console.log(mixString)
+    // let mixString = lowercaseString + uppercaseString + numericString + specialString;
+    // console.log(mixString.length)
+    console.log(password)
+    return password;
   }
-      else {
-        return "not matached";
-      }
+  else {
+    return "Not matached";
+  }
 }
 
-function getRandomString(x) {
+function getRandomNumber(x) {
   //return 1 to x random characters
-  return Math.floor(Math.random()* x) +1;
+  return Math.floor(Math.random() * x) + 1;
 }
 
 function getCondition() {
-  const length = parseInt(promt ("Please enter at lease 8 characters and no more than 128 characters"));
-  const lowercase = confirm ("Would you like to have lowercase?")
-  const uppercase = confirm ("Would you like to have uppercase?")
-  const numeric = confirm ("Would you like to have numeric?")
-  const special = confirm ("Would you like to have special characters?")
+  const length = parseInt(prompt("Please enter at lease 8 characters and no more than 128 characters"));
+  const lowercase = confirm("Would you like to have lowercase?")
+  const uppercase = confirm("Would you like to have uppercase?")
+  const numeric = confirm("Would you like to have numeric?")
+  const special = confirm("Would you like to have special characters?")
 
   let condition = {
     length: length,
@@ -81,13 +90,9 @@ function getCondition() {
     special: special,
   };
 
-  if (!(length >= 8 && length <= 128)) {
+  if (length < 8 || length > 128) {
     condition = "";
   }
 
   return condition;
-
-
-
-
 }
