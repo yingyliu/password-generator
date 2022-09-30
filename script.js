@@ -55,26 +55,22 @@ function generatePassword(userPicks) {
       userTemplate += numericTemplate;
     }
     
-    // for each char slot
-    // for (var i = 0; i < length; i++) {
-    //   password += userTemplate[getRandomNumber(userTemplate.length-1)];
-    // }
-
+// check does the string in the user template contains the string from the lowercaseTemplate
 if (userTemplate.indexOf(lowercaseTemplate) >= 0) {
   password += lowercaseTemplate[getRandomNumber(lowercaseTemplate.length - 1)];
 
 }
-
+// check does the string in the user template contains the string from the uppercaseTemplate
 if (userTemplate.indexOf(uppercaseTemplate) >= 0) {
   password += uppercaseTemplate[getRandomNumber(uppercaseTemplate.length - 1)];
   
 }
-
+// check does the string in the user template contains the string from the numericTemplate
 if (userTemplate.indexOf(numericTemplate) >= 0) {
   password += numericTemplate[getRandomNumber(numericTemplate.length - 1)];
   
 }
-
+// check does the string in the user template contains the string from the specialTemplate
 if (userTemplate.indexOf(specialTemplate) >= 0) {
   password += specialTemplate[getRandomNumber(specialTemplate.length - 1)];
   
@@ -82,6 +78,7 @@ if (userTemplate.indexOf(specialTemplate) >= 0) {
 
 const passwordLength = password.length;
 
+//for each char slot
 for (var i = 0; i < length - passwordLength; i++) {
   password += userTemplate[getRandomNumber(4)];
 }
@@ -105,39 +102,35 @@ function getRandomNumber(x) {
 
 function getCondition() {
   var length, lowercase, uppercase, numeric, special;
-  //
+  // check if user pressed cancel or password length does not meet the requirement
   while ((length!==null && !parseInt(length))|| parseInt(length) < 8 || parseInt(length) > 128) {
+    
     length = (
       prompt("Please enter at lease 8 characters and no more than 128 characters")
     );
   }
 
   if (length) {
-    var hasCondition;
-  
-    while (!hasCondition) {
+
+    var meetCondition;
+    // check if user selected at least one condition
+    while (!meetCondition) {
       lowercase = confirm("Would you like to have lowercase?");
       uppercase = confirm("Would you like to have uppercase?");
       numeric = confirm("Would you like to have numeric?");
       special = confirm("Would you like to have special characters?");
   
-      hasCondition = lowercase || uppercase || numeric || special;
-  
-      if (!hasCondition) {
-        alert("please enter any characters");
+      meetCondition = lowercase || uppercase || numeric || special;
+      
+      // reminder user to choose at least one condition for the password
+      if (!meetCondition) {
+        alert("Reminder: You need to choose at least one condition for the password.");
       }
   
     }
     
   }
 
-
-
-  // const length = parseInt(prompt("Please enter at lease 8 characters and no more than 128 characters"));
-  // const lowercase = confirm("Would you like to have lowercase?")
-  // const uppercase = confirm("Would you like to have uppercase?")
-  // const numeric = confirm("Would you like to have numeric?")
-  // const special = confirm("Would you like to have special characters?")
 
   var condition = {
     length: length,
